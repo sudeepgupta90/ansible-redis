@@ -1,2 +1,24 @@
 ---
 # tasks file for ansible-redis/
+- name: add apt ppa support
+  apt:
+    name: "{{ item }}"
+    state:  present
+    update_cache: true
+    cache_valid_time: 3600
+  with_items:
+    - software-properties-common
+    - apt-transport-https
+
+- name: add ppa
+  apt_repository:
+    repo: ppa:chris-lea/redis-server
+    state: present
+    update_cache: true
+
+- name: install redis-server
+  apt:
+    name: redis-server
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
